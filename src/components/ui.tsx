@@ -9,6 +9,7 @@ import {
 } from "@/data"
 import { useTheme, type ThemeMode } from "@/theme"
 import { useNavLayout } from "@/nav-layout"
+import { asset } from "@/asset"
 
 export function Cross({
   className = "",
@@ -320,7 +321,7 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
           </a>
         </div>
         <a
-          href="/Karl_Bastian_C_Lacap_CV.pdf"
+          href={asset("Karl_Bastian_C_Lacap_CV.pdf")}
           download="Karl_Bastian_C_Lacap_CV.pdf"
           className="inline-flex items-center gap-1 px-1 font-mono text-xs text-muted transition hover:text-ink"
         >

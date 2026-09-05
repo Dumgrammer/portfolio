@@ -28,7 +28,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <NavLayoutProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "") || undefined}>
           <ScrollToHash />
           <Routes>
             <Route path="/" element={<Home />} />

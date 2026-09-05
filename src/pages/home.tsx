@@ -17,6 +17,7 @@ import {
   STATS,
   WINS,
 } from "@/data"
+import { asset } from "@/asset"
 
 export default function Home() {
   return (
@@ -60,7 +61,7 @@ export default function Home() {
               View projects
             </Link>
             <a
-              href="/Karl_Bastian_C_Lacap_CV.pdf"
+              href={asset("Karl_Bastian_C_Lacap_CV.pdf")}
               download="Karl_Bastian_C_Lacap_CV.pdf"
               className="rounded-full border-2 border-ink bg-surface px-5 py-2.5 font-semibold transition hover:-translate-y-0.5 hover:bg-paper"
             >
@@ -268,7 +269,7 @@ export default function Home() {
               LinkedIn
             </a>
             <a
-              href="/Karl_Bastian_C_Lacap_CV.pdf"
+              href={asset("Karl_Bastian_C_Lacap_CV.pdf")}
               download="Karl_Bastian_C_Lacap_CV.pdf"
               className="rounded-full border-2 border-[#f1f3f4] px-5 py-2.5 font-semibold transition hover:-translate-y-0.5 hover:bg-white/10"
             >
