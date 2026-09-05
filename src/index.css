@@ -120,15 +120,16 @@ html {
   box-shadow: 0 8px 0 0 var(--chunk-shadow);
 }
 
-/* Cert gallery — fixed meta row so every card footer matches */
+/* Cert gallery — fixed media + meta so cards don't collapse */
 .cert-card {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) 7.5rem;
+  grid-template-rows: 14rem 7.5rem;
   height: 100%;
 }
 
 .cert-card__media {
-  min-height: 0;
+  min-height: 14rem;
+  height: 14rem;
   overflow: hidden;
   display: flex;
   align-items: center;

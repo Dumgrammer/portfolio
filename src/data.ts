@@ -295,7 +295,7 @@ export const ACHIEVEMENT_PHOTOS = [
   {
     title: "Phoenix's Journey to the Cloud",
     note: "AWS Learning Club GC CCS · Arthaland Century Pacific Tower, BGC",
-    image: asset("Achievements/9.png"),
+    image: asset("Achievements/9.jpg"),
     accent: "yellow" as const,
   },
   {
@@ -307,13 +307,13 @@ export const ACHIEVEMENT_PHOTOS = [
   {
     title: "Graduation — Cum Laude",
     note: "Gordon College · BS Information Technology",
-    image: asset("Achievements/6.JPG"),
+    image: asset("Achievements/6.jpg"),
     accent: "blue" as const,
   },
   {
     title: "Graduation Day",
     note: "Gordon College commencement",
-    image: asset("Achievements/4.jfif"),
+    image: asset("Achievements/4.jpg"),
     accent: "blue" as const,
   },
   {
@@ -325,7 +325,7 @@ export const ACHIEVEMENT_PHOTOS = [
   {
     title: "Diploma day",
     note: "Gordon College graduates",
-    image: asset("Achievements/Nig.jfif"),
+    image: asset("Achievements/Nig.jpg"),
     accent: "yellow" as const,
   },
 ]
