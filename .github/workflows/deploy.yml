@@ -19,8 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-        with:
-          lfs: true
 
       - uses: actions/setup-node@v5
         with:
@@ -32,14 +30,20 @@ jobs:
 
       - name: Verify images are real binaries (not LFS pointers)
         run: |
-          file public/AWSCC.jpg
           python - <<'PY'
           from pathlib import Path
-          p = Path("public/AWSCC.jpg")
-          head = p.read_bytes()[:64]
-          if head.startswith(b"version https://git-lfs.github.com"):
-              raise SystemExit("AWSCC.jpg is still an LFS pointer — checkout lfs failed")
-          print(f"OK {p} ({p.stat().st_size} bytes)")
+          samples = [
+              Path("public/AWSCC.jpg"),
+              Path("public/Achievements/3.jpg"),
+              Path("public/Switch.png"),
+          ]
+          for p in samples:
+              head = p.read_bytes()[:64]
+              if head.startswith(b"version https://git-lfs.github.com"):
+                  raise SystemExit(f"{p} is still an LFS pointer")
+              if p.stat().st_size < 1000:
+                  raise SystemExit(f"{p} is suspiciously small ({p.stat().st_size} bytes)")
+              print(f"OK {p} ({p.stat().st_size} bytes)")
           PY
 
       - name: Build
