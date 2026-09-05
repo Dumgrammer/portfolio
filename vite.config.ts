@@ -1,57 +1,11 @@
 import { defineConfig, type HtmlTagDescriptor, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-import siteConfiguration from './.figma/make/site.json'
-
-function resolveBase() {
-  if (process.env.FIGMA_PUBLIC_URL) {
-    return `${process.env.FIGMA_PUBLIC_URL}/`
-  }
-  // Prefer a bare repo name (e.g. Portfolio) so Git Bash doesn't mangle /Portfolio/
-  const raw = (process.env.BASE_PATH || "").trim()
-  if (!raw || raw === "/") return "/"
-  const name = raw.replace(/^\/+|\/+$/g, "")
-  return `/${name}/`
-}
-
-// Vite config — https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  // .figma/make/deploy-preview passes `--mode development` for cached-preview builds.
-  const emitSourcemaps = mode === 'development'
-
-  return {
-    base: resolveBase(),
-    build: {
-      sourcemap: emitSourcemaps ? 'inline' : false,
-      minify: !emitSourcemaps,
-    },
-    plugins: [
-      react(),
-      tailwindcss(),
-      figmaSiteConfiguration(siteConfiguration),
-      figmaErrorOverlayReplay(),
-      figmaReactRefreshBoundaryFallback(),
-      figmaMakeKitPlugin({ storiesGlob: '/src/**/*.stories.{ts,tsx,js,jsx}' }),
-    ],
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, './src'),
-      },
-    },
-    server: {
-      host: process.env.FIGMA_DEV_SERVER_HOST || '0.0.0.0',
-      port: parseInt(process.env.PORT || '8443'),
-      strictPort: true,
-      watch: { ignored: ['**/.figma/**'] },
-    },
-    preview: {
-      host: process.env.FIGMA_DEV_SERVER_HOST || '0.0.0.0',
-      port: parseInt(process.env.PORT || '8443'),
-    },
-  }
-})
+const rootDir = path.dirname(fileURLToPath(import.meta.url))
 
 type FigmaSiteConfiguration = {
   title?: string
@@ -79,6 +33,78 @@ type FigmaSiteConfiguration = {
     addBypassLinks?: boolean
   }
 }
+
+const DEFAULT_SITE: FigmaSiteConfiguration = {
+  title: 'Karl Lacap — Portfolio',
+  description:
+    'Karl Bastian Lacap — AWS Certified Cloud Practitioner, BS IT Cum Laude. Software engineering, QA, and cloud.',
+  robots: { index: true },
+  accessibility: { addBypassLinks: false },
+}
+
+function loadSiteConfiguration(): FigmaSiteConfiguration {
+  const candidate = path.resolve(rootDir, '.figma/make/site.json')
+  if (!existsSync(candidate)) return DEFAULT_SITE
+  try {
+    return {
+      ...DEFAULT_SITE,
+      ...(JSON.parse(readFileSync(candidate, 'utf8')) as FigmaSiteConfiguration),
+    }
+  } catch {
+    return DEFAULT_SITE
+  }
+}
+
+const siteConfiguration = loadSiteConfiguration()
+
+function resolveBase() {
+  if (process.env.FIGMA_PUBLIC_URL) {
+    return `${process.env.FIGMA_PUBLIC_URL}/`
+  }
+  // Prefer a bare repo name (e.g. Portfolio) so Git Bash doesn't mangle /Portfolio/
+  const raw = (process.env.BASE_PATH || '').trim()
+  if (!raw || raw === '/') return '/'
+  const name = raw.replace(/^\/+|\/+$/g, '')
+  return `/${name}/`
+}
+
+// Vite config — https://vitejs.dev/config/
+export default defineConfig(({ mode }) => {
+  // .figma/make/deploy-preview passes `--mode development` for cached-preview builds.
+  const emitSourcemaps = mode === 'development'
+
+  return {
+    base: resolveBase(),
+    build: {
+      sourcemap: emitSourcemaps ? 'inline' : false,
+      minify: !emitSourcemaps,
+    },
+    plugins: [
+      react(),
+      tailwindcss(),
+      figmaSiteConfiguration(siteConfiguration),
+      figmaErrorOverlayReplay(),
+      figmaReactRefreshBoundaryFallback(),
+      figmaMakeKitPlugin({ storiesGlob: '/src/**/*.stories.{ts,tsx,js,jsx}' }),
+    ],
+    resolve: {
+      alias: {
+        '@': path.resolve(rootDir, './src'),
+      },
+    },
+    server: {
+      host: process.env.FIGMA_DEV_SERVER_HOST || '0.0.0.0',
+      port: parseInt(process.env.PORT || '8443'),
+      strictPort: true,
+      watch: { ignored: ['**/.figma/**'] },
+    },
+    preview: {
+      host: process.env.FIGMA_DEV_SERVER_HOST || '0.0.0.0',
+      port: parseInt(process.env.PORT || '8443'),
+    },
+  }
+})
+
 
 /** Applies /.figma/make/site.json to the generated document shell. */
 function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
