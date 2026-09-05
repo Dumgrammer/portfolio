@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import 'tailwindcss';
+
+:root {
+  --ink: #0f0f0f;
+  --paper: #f1f3f4;
+  --surface: #ffffff;
+  --muted: rgba(15, 15, 15, 0.55);
+  --faint: rgba(15, 15, 15, 0.4);
+  --g-blue-soft: #d2e3fc;
+  --g-red-soft: #fad2cf;
+  --g-yellow-soft: #feefc3;
+  --g-green-soft: #ceead6;
+  --chunk-shadow: #0f0f0f;
+  --sidebar: #ffffff;
+  --sidebar-border: #0f0f0f;
+  --nav-hover: #f1f3f4;
+}
+
+html.dark {
+  --ink: #e8eaed;
+  --paper: #0f1115;
+  --surface: #1a1d24;
+  --muted: rgba(232, 234, 237, 0.6);
+  --faint: rgba(232, 234, 237, 0.4);
+  --g-blue-soft: #1a3050;
+  --g-red-soft: #4a2220;
+  --g-yellow-soft: #4a3d12;
+  --g-green-soft: #1a3d28;
+  --chunk-shadow: #000000;
+  --sidebar: #14161c;
+  --sidebar-border: #2a2e38;
+  --nav-hover: #22262f;
+}
+
+@theme {
+  --font-display: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-nav-hover: var(--nav-hover);
+  --color-g-blue: #4285f4;
+  --color-g-red: #ea4335;
+  --color-g-yellow: #fbbc04;
+  --color-g-green: #34a853;
+  --color-g-blue-soft: var(--g-blue-soft);
+  --color-g-red-soft: var(--g-red-soft);
+  --color-g-yellow-soft: var(--g-yellow-soft);
+  --color-g-green-soft: var(--g-green-soft);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-g-yellow);
+  color: #0f0f0f;
+}
+
+/* Theme ripple — View Transitions API */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-image-pair(root) {
+  isolation: auto;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Hide scrollbars until scrolling */
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.chunk-shadow {
+  box-shadow: 0 4px 0 0 var(--chunk-shadow);
+}
+
+.chunk-shadow-lg {
+  box-shadow: 0 6px 0 0 var(--chunk-shadow);
+}
+
+.chunk-shadow-hover:hover {
+  box-shadow: 0 8px 0 0 var(--chunk-shadow);
+}
+
+/* Cert gallery — fixed meta row so every card footer matches */
+.cert-card {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 7.5rem;
+  height: 100%;
+}
+
+.cert-card__media {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cert-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.cert-card__meta {
+  box-sizing: border-box;
+  height: 7.5rem;
+  min-height: 7.5rem;
+  max-height: 7.5rem;
+  padding: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.cert-card__title {
+  height: 3rem;
+  line-height: 1.5rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Achievement photo gallery — same fixed footer pattern */
+.ach-card {
+  display: grid;
+  grid-template-rows: 14rem 7.5rem;
+  height: 100%;
+}
+
+.ach-card__media {
+  min-height: 0;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.ach-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.ach-card__meta {
+  box-sizing: border-box;
+  height: 7.5rem;
+  min-height: 7.5rem;
+  max-height: 7.5rem;
+  padding: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.ach-card__title {
+  height: 3rem;
+  line-height: 1.5rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Playful floating doodles */
+.playful-bg {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.playful-bg__item {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  opacity: 0.42;
+  animation: playful-float var(--dur, 20s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  will-change: transform;
+}
+
+html.dark .playful-bg__item {
+  opacity: 0.28;
+}
+
+.playful-bg__item svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes playful-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-6deg);
+  }
+  25% {
+    transform: translate3d(var(--drift, 16px), -18px, 0) rotate(4deg);
+  }
+  50% {
+    transform: translate3d(calc(var(--drift, 16px) * -0.6), 10px, 0) rotate(-3deg);
+  }
+  75% {
+    transform: translate3d(calc(var(--drift, 16px) * 0.4), -8px, 0) rotate(5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playful-bg__item {
+    animation: none;
+  }
+}
